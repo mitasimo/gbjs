@@ -52,16 +52,41 @@ function task4() {
     let isFirst = true;
     let maxLimit = 15;
     let minLimit = getRandomInt(0, maxLimit);
-    for (var i = minLimit; i <= maxLimit; i++) {
-        if (isFirst) {
-            isFirst = false;
-            res = res + i;
-        }
-        else {
-            res = res + ", " + i;
-        }
+    switch (minLimit) {
+    case 0:
+        res += ", " + 0;
+    case 1:
+        res += ", " + 1;
+    case 2:
+        res += ", " + 2;
+    case 3:
+        res += ", " + 3;
+    case 4:
+        res += ", " + 4;
+    case 5:
+        res += ", " + 5;
+    case 6:
+        res += ", " + 6;
+    case 7:
+        res += ", " + 7;
+    case 8:
+        res += ", " + 8;
+    case 9:
+        res += ", " + 9;
+    case 10:
+        res += ", " + 10;
+    case 11:
+        res += ", " + 11;
+    case 12:
+        res += ", " + 12;
+    case 13:
+        res += ", " + 13;
+    case 14:
+        res += ", " + 14;
+    case 15:
+        res += ", " + 15;
     }
-    alert("task 4. [" + minLimit + ":" + maxLimit + "] = " + res);
+    alert("task 4. [" + minLimit + ":" + maxLimit + "] = [" + res + "]");
 }
 // task 5 =====================================================================
 function plus(arg1, arg2) {
