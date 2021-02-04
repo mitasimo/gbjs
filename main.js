@@ -3,7 +3,7 @@
 // task 1 =====================================================================
 
 function task1() {
-    var a = 1,
+    let a = 1,
         b = 1,
         c, d;
     c = ++a; // перед присвоение "c" "a" уже равно 2 
@@ -21,8 +21,8 @@ function task1() {
 // task 2 =====================================================================
 
 function task2() {
-    var a = 2;
-    var x = 1 + (a *= 2);
+    let a = 2;
+    let x = 1 + (a *= 2);
     alert("task2. x = " + x);
 
     // код выше можно заменить на
@@ -35,7 +35,7 @@ function task2() {
 // task 3 =====================================================================
 
 function task3() {
-    var a = 10,
+    let a = 10,
         b = -12,
         c = 0;
 
@@ -57,10 +57,10 @@ function getRandomInt(min, max) {
 }
 
 function task4() {
-    var res = "";
-    var isFirst = true;
-    var maxLimit = 15;
-    var minLimit = getRandomInt(0, maxLimit);
+    let res = "";
+    let isFirst = true;
+    let maxLimit = 15;
+    let minLimit = getRandomInt(0, maxLimit);
 
     for (var i = minLimit; i <= maxLimit; i++) {
         if (isFirst) {
@@ -101,7 +101,7 @@ function task5() {
 // task 6 =====================================================================
 
 function mathOperation(arg1, arg2, operation) {
-    var res;
+    let res;
 
     switch (operation) {
         case "plus":
