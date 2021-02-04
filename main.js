@@ -1,6 +1,5 @@
 "use strict"
 
-<<<<<<< HEAD
 // task 1 =====================================================================
 
 function task1() {
@@ -154,6 +153,3 @@ function power(val, pow) {
 function task8() {
     alert("Task8. 3**5 = " + power(3, 5));
 }
-=======
-var a = 1;
->>>>>>> dd5af16669ea3cba6294f2379b521e812a5b4996
