@@ -52,11 +52,14 @@ function task2_3(){
 }
 
 function countBasketPrice(basket){
-	let basketPrice = 0;
-	for(let i=0; i<basket.length; i++){
-		basketPrice += basket[i].price;
-	}
-	return basketPrice;
+	// let basketPrice = 0;
+	// for(let i=0; i<basket.length; i++){
+	// 	basketPrice += basket[i].price;
+	// }
+	// return basketPrice;
+	return basket.reduce(function(acc, elem){
+		return acc + elem.price;
+	}, 0);
 }
 
 // task 4
