@@ -1,5 +1,18 @@
 "use strict"
 
+// run all tasks
+
+function tasks(){
+	console.log("task 1 ==========");
+	task1();
+	console.log("task 2, 3 =======");
+	task2_3();
+	console.log("task 4 ==========");
+	task4();
+	console.log("task 5 ==========");
+	task5();
+}
+
 // task 1
 
 function task1(){
