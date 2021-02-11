@@ -24,7 +24,6 @@ function number2Object(num){
     let units = intNum - tens * 10;
 
     return {"сотни" : hundreds, "десятки" : tens , "единицы" : units};
-
 }
 
 // Task 2
