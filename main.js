@@ -1,5 +1,7 @@
 "use strict"
 
+// Task 1
+
 function testNumber2Object(){
     console.log(number2Object(3));
     console.log(number2Object(25));
@@ -25,50 +27,65 @@ function number2Object(num){
 
 }
 
+// Task 2
 
 function testBasket(){
 
-    // create products
-    let smartphone = createProduct(1, "Smartphone", 25000);
-    let notebook = createProduct(2, "Notebook", 87500);
-    let computer = createProduct(3, "Computer", 176500);
+    // create catalog
+    let smartphone = new Product(1, "Smartphone", 25000);
+    let notebook = new Product(2, "Notebook", 87500);
+    let computer = new Product(3, "Computer", 176500);
 
     // create basket
-    let basket = createBasket();
+    let basket = new Basket();
     // add products to basket
-    basket.addProduct(smartphone, 5);
-    basket.addProduct(smartphone, 15);
-    basket.addProduct(notebook, 2);
-    basket.addProduct(notebook, 5);
-    basket.addProduct(computer, 2);
-    basket.addProduct(computer, 5);
+    basket.addItem(smartphone, 5);
+    basket.addItem(smartphone, 15);
+    basket.addItem(notebook, 2);
+    basket.addItem(notebook, 5);
+    basket.addItem(computer, 2);
+    basket.addItem(computer, 5);
 
     // count and print basket price
     console.log("Total basket price = " + basket.countPrice());
 }
 
-function createBasket(){
-    return {
-        // busket items
-        items: new Array(),
-        
-        addProduct: function(newProduct, addQty){
-            for(let item of this.items){
-                if(item.product.code == newProduct.code){
-                    item.qty += addQty;
+class Basket {
+    constructor() {
+        this.items = new Array();
+        this.addItem = function (product, qty) {
+            for (let item of this.items) {
+                if (item.product.equal(product)) {
+                    item.addQty(qty);
                 }
             };
-            this.items.push({product: newProduct, qty: addQty});
-        },
-
-        countPrice: function(){
-            return this.items.reduce(function(total, item){
+            this.items.push(new BasketItem(product, qty));
+        };
+        this.countPrice = function () {
+            return this.items.reduce(function (total, item) {
                 return total + item.product.price * item.qty;
             }, 0);
-        }
-    };
+        };
+    }
 }
 
-function createProduct(prodCode, prodName, prodPrice){
-    return {code: prodCode, name: prodName, price: prodPrice};
+class BasketItem{
+    constructor(product, qty){
+        this.product = product;
+        this.qty = qty;
+        this.addQty = function(qty){
+            this.qty += qty;
+        }
+    }
+}
+
+class Product {
+    constructor(code, name, price) {
+        this.code = code;
+        this.name = name;
+        this.price = price;
+        this.equal = function(product){
+            return this.code === product.code;
+        }
+    }
 }
