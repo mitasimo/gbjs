@@ -53,19 +53,19 @@ function testBasket(){
 class Basket {
     constructor() {
         this.items = new Array();
-        this.addItem = function (product, qty) {
-            for (let item of this.items) {
-                if (item.product.equal(product)) {
-                    item.addQty(qty);
-                }
-            };
-            this.items.push(new BasketItem(product, qty));
+    }
+    addItem(product, qty) {
+        for (let item of this.items) {
+            if (item.product.equal(product)) {
+                item.addQty(qty);
+            }
         };
-        this.countPrice = function () {
-            return this.items.reduce(function (total, item) {
-                return total + item.product.price * item.qty;
-            }, 0);
-        };
+        this.items.push(new BasketItem(product, qty));
+    }
+    countPrice() {
+        return this.items.reduce(function (total, item) {
+            return total + item.product.price * item.qty;
+        }, 0);
     }
 }
 
@@ -73,9 +73,9 @@ class BasketItem{
     constructor(product, qty){
         this.product = product;
         this.qty = qty;
-        this.addQty = function(qty){
-            this.qty += qty;
-        }
+    }
+    addQty(qty){
+        this.qty += qty;
     }
 }
 
@@ -84,8 +84,8 @@ class Product {
         this.code = code;
         this.name = name;
         this.price = price;
-        this.equal = function(product){
-            return this.code === product.code;
-        }
+    }
+    equal(product){
+        return this.code === product.code;
     }
 }
