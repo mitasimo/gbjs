@@ -1,3 +1,13 @@
 "use strict"
 
-var a = 1;
+function task1(){
+
+}
+
+function task2(){
+    
+}
+
+function task3(){
+    
+}
