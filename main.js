@@ -57,6 +57,7 @@ class Basket {
         for (let item of this.items) {
             if (item.product.equal(product)) {
                 item.addQty(qty);
+                break;
             }
         };
         this.items.push(new BasketItem(product, qty));
