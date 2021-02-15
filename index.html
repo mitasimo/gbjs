@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -11,18 +11,25 @@
     <h1>Урок 5</h1>
     
     <h2>Шахматная доска</h2>
-    <div id="chessboard"></div>
+    <table id="chessboard"></table>
 
-    <h2>Basket</h2>
+    <h2>Корзина</h2>
     <p id="basket"></p>
 
-    <h2>Catalog</h2>
-    <ul id="catalog">
-    </ul>
+    <h2>Каталог</h2>
+    <table id="catalog">
+        <tr>
+            <th>Код</th><th>Наименование</th><th>Цена</th>
+        </tr>
+    </table>
 
     <script src="main.js"></script>
     <script>
-        window.onload = afterLoadingDocument;       
+        window.onload = function(){
+            showChessBoard(document.getElementById("chessboard"));
+            showBasket(document.getElementById("basket"));
+            showCatalog(document.getElementById("catalog"));
+        };       
     </script>
 </body>
 
