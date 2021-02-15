@@ -1,43 +1,55 @@
 "use strict"
 
-function showChessBoard(chessBoard){
+function showChessBoard(placeHolder){
 
+    let chessBoard = document.createElement("table");
     // create columns header
 
     let columnsHeader = document.createElement("tr");
     chessBoard.appendChild(columnsHeader);
     // first cell over row header
     let emptyCell = document.createElement("th");
-    emptyCell.setAttribute("class", "cell")
+    emptyCell.classList.add("cell");
     columnsHeader.appendChild(emptyCell);
     //
     let columns = ['A','B','C','D','E','F','G','H']; 
     for(let i of columns){
         let columnHeader = document.createElement("th");
-        columnHeader.setAttribute("class", "cell")
-        columnHeader.innerHTML = i;
+        columnHeader.classList.add("cell");
+        columnHeader.textContent = i;
         columnsHeader.appendChild(columnHeader);
     }
 
     // create board
-    for(let i = 1; i < 9; i++){
+    for(let i = 8; i > 0; i--){
         // add new row
         let row = document.createElement("tr");
         chessBoard.appendChild(row);
         // add row header
         let rowHeader = document.createElement("td");
-        rowHeader.setAttribute("class", "cell rowheader")
-        rowHeader.innerHTML = String(i);
+        rowHeader.classList.add("cell");
+        rowHeader.classList.add("rowheader");
+        rowHeader.textContent = String(i);
         row.appendChild(rowHeader);
+
+        let isOddRow = (i % 2) > 0;
         
         // add cells to row
         for(let j = 1; j < 9; j++){
+            let isOddColumn = (j % 2) > 0;
             let cell = document.createElement("td");
-            cell.setAttribute("class", "cell")
+            cell.classList.add("cell");
+            if(isOddRow == isOddColumn)
+                cell.style.backgroundColor = "#000";
             row.appendChild(cell);
         }
     }
+
+    // add chess board to DOM
+    placeHolder.appendChild(chessBoard);
 }
+
+////////////////////////////////////////////////////////////////////
 
 class Product {
     constructor(code, name, price) {
@@ -45,8 +57,8 @@ class Product {
         this.name = name;
         this.price = price;
     }
-    equal(product){
-        return this.code === product.code;
+    isEqual(product){
+        return (this.code === product.code);
     }
 }
 
@@ -54,10 +66,10 @@ class Catalog {
     constructor(){
         this.items = new Array();
     }
-    add(product){
-        if(!find(product.code)) this.items.push(product);
+    addProduct(product){
+        if(!this.findProduct(product.code)) this.items.push(product);
     }
-    find(productCode){
+    findProduct(productCode){
         for(let item of this.items){
             if(item.code == productCode) return item;
         }
@@ -66,68 +78,90 @@ class Catalog {
 }
 
 function fullCatalog(){
-    catalog.add(new Product("0001", "Smartphone", 21500));
-    catalog.add(new Product("0002", "Notebook", 82000));
-    catalog.add(new Product("0003", "Tablet", 35000));
+    catalog.addProduct(new Product("0001", "Smartphone", 21500));
+    catalog.addProduct(new Product("0002", "Notebook", 82000));
+    catalog.addProduct(new Product("0003", "Tablet", 35000));
 }
 
-function showCatalog(catalogElem){
+function showCatalog(catalogPlaceHolder){
+    
+    let catalogElem = document.createElement("table");
+
+    let headerRowElem = document.createElement("tr");
+    catalogElem.appendChild(headerRowElem);
+
+    let codeColumnElem = document.createElement("th");
+    codeColumnElem.textContent = "Код";
+    headerRowElem.appendChild(codeColumnElem);
+    
+    let nameColumnElem = document.createElement("th");
+    nameColumnElem.textContent = "Наименование";
+    headerRowElem.appendChild(nameColumnElem);
+    
+    let priceColumnElem = document.createElement("th");
+    priceColumnElem.textContent = "Цена";
+    headerRowElem.appendChild(priceColumnElem);
+    
     // add items to catalog
     for(let item of catalog.items){
         let prodRowElem = document.createElement("tr");
         catalogElem.appendChild(prodRowElem);
 
         let prodCodeElem = document.createElement("td");
-        prodCodeElem.innerText = item.code;
+        prodCodeElem.textContent = item.code;
         prodRowElem.appendChild(prodCodeElem);
 
         let prodNameElem = document.createElement("td");
-        prodNameElem.innerText = item.name;
+        prodNameElem.textContent = item.name;
         prodRowElem.appendChild(prodNameElem);
 
         let prodPriceElem = document.createElement("td");
-        prodPriceElem.innerText = item.price;
+        prodPriceElem.textContent = item.price;
         prodRowElem.appendChild(prodPriceElem);
     }
+
+    catalogPlaceHolder.appendChild(catalogElem);
 }
 
 class Basket {
     constructor() {
         this.items = new Array();
     }
-    addItem(productCode, qty) {
+    addItem(product, qty) {
         for (let item of this.items) {
-            if (item.productCode == productCode) {
+            if (item.haveProduct(product)) {
                 item.addQty(qty);
                 break;
             }
         };
-        this.items.push(new BasketItem(productCode, qty));
+        this.items.push(new BasketItem(product, qty));
     }
     countPrice() {
         return this.items.reduce(function (total, item) {
-            let prod = catalog.find(item.productCode);
             total.qty += item.qty;
-            total.price += prod.price * item.qty;
+            total.price += item.product.price * item.qty;
             return total; 
         }, {price: 0, qty: 0});
     }
 }
 
 class BasketItem{
-    constructor(productCode, qty){
-        this.productCode = productCode;
+    constructor(product, qty){
+        this.product = product;
         this.qty = qty;
     }
     addQty(qty){
         this.qty += qty;
     }
+    haveProduct(product){
+        return this.product.isEqual(product);
+    }
 }
 
 function fullBasket(){
-    basket.addItem("0001", 15);
-    basket.addItem("0002", 10);
-    basket.addItem("0003", 5);
+    basket.addItem(catalog.findProduct("0001"), 15);
+    basket.addItem(catalog.findProduct("0002"), 10);
+    basket.addItem(catalog.findProduct("0003"), 5);
 }
 
 function showBasket(basketElem){
@@ -135,7 +169,7 @@ function showBasket(basketElem){
     let basketInfo = "Корзина пуста";
     let basketTotal = basket.countPrice();
     if(basketTotal.qty>0){
-        basketInfo = "В корзине " + basketTotal.qty + " товаров на сумму " + basketTotal.price + " рублей";
+        basketInfo = `В корзине ${basketTotal.qty} товаров на сумму ${basketTotal.price} рублей`;
     }
 
     basketElem.innerText = basketInfo;

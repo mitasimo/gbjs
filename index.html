@@ -11,24 +11,20 @@
     <h1>Урок 5</h1>
     
     <h2>Шахматная доска</h2>
-    <table id="chessboard"></table>
+    <div id="chessboard"></div>
 
     <h2>Корзина</h2>
     <p id="basket"></p>
 
     <h2>Каталог</h2>
-    <table id="catalog">
-        <tr>
-            <th>Код</th><th>Наименование</th><th>Цена</th>
-        </tr>
-    </table>
+    <div id="catalog"></div>
 
     <script src="main.js"></script>
     <script>
         window.onload = function(){
-            showChessBoard(document.getElementById("chessboard"));
-            showBasket(document.getElementById("basket"));
-            showCatalog(document.getElementById("catalog"));
+            showChessBoard(document.querySelector("#chessboard"));
+            showBasket(document.querySelector("#basket"));
+            showCatalog(document.querySelector("#catalog"));
         };       
     </script>
 </body>
