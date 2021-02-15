@@ -1,5 +1,10 @@
 "use strict"
 
+function afterLoadingDocument(){
+    createChessBoard();
+    
+}
+
 function createChessBoard(){
     let placeHolder = document.getElementById("chessboard");
     
@@ -41,5 +46,12 @@ function createChessBoard(){
             row.appendChild(cell);
         }
     }
-    
+}
+
+function createBasket(){
+
+}
+
+function createCatalog(){
+
 }
