@@ -105,7 +105,7 @@ class Catalog {
 }
 
 
-function fullCatalog(){
+function fillCatalog(){
     catalog.addProduct(new Product("0001", "Smartphone", 21500));
     catalog.addProduct(new Product("0002", "Notebook", 82000));
     catalog.addProduct(new Product("0003", "Tablet", 35000));
@@ -189,7 +189,7 @@ class BasketItem{
     }
 }
 
-function fullBasket(){
+function fillBasket(){
     basket.addItem(catalog.findProduct("0001"), 15);
     basket.addItem(catalog.findProduct("0002"), 10);
     basket.addItem(catalog.findProduct("0003"), 5);
@@ -210,7 +210,7 @@ function showBasket(basketElem){
 // initialize
 
 var catalog = new Catalog();
-fullCatalog();
+fillCatalog();
 
 var basket = new Basket();
-fullBasket();
+fillBasket();
