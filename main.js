@@ -1,36 +1,23 @@
 "use strict"
 
+////////////////////////////////////////////////////////////////////
+// task 1
+
 function showChessBoard(placeHolder){
 
     let chessBoard = document.createElement("table");
-    // create columns header
-
-    let columnsHeader = document.createElement("tr");
-    chessBoard.appendChild(columnsHeader);
-    // first cell over row header
-    let emptyCell = document.createElement("th");
-    emptyCell.classList.add("cell");
-    columnsHeader.appendChild(emptyCell);
-    //
-    let columns = ['A','B','C','D','E','F','G','H']; 
-    for(let i of columns){
-        let columnHeader = document.createElement("th");
-        columnHeader.classList.add("cell");
-        columnHeader.textContent = i;
-        columnsHeader.appendChild(columnHeader);
-    }
+    
+    // columns header
+   showColumnHeader(chessBoard);
 
     // create board
     for(let i = 8; i > 0; i--){
         // add new row
         let row = document.createElement("tr");
         chessBoard.appendChild(row);
-        // add row header
-        let rowHeader = document.createElement("td");
-        rowHeader.classList.add("cell");
-        rowHeader.classList.add("rowheader");
-        rowHeader.textContent = String(i);
-        row.appendChild(rowHeader);
+        
+        // add row header at left side
+        showRowHeader(row, i);
 
         let isOddRow = (i % 2) > 0;
         
@@ -43,13 +30,50 @@ function showChessBoard(placeHolder){
                 cell.style.backgroundColor = "#000";
             row.appendChild(cell);
         }
-    }
+
+        // add row header at right side
+        showRowHeader(row, i);
+   }
+
+    showColumnHeader(chessBoard);
 
     // add chess board to DOM
     placeHolder.appendChild(chessBoard);
 }
 
+function showColumnHeader(parentElem){
+    
+    // create row for header
+    let headerRowElem = document.createElement("tr");
+    parentElem.appendChild(headerRowElem);
+    
+    // first cell over row header
+    let emptyCellElem = document.createElement("th");
+    emptyCellElem.classList.add("cell");
+    headerRowElem.appendChild(emptyCellElem);
+    //
+    let columns = ['A','B','C','D','E','F','G','H']; 
+    for(let i of columns){
+        let headerCellElem = document.createElement("th");
+        headerCellElem.classList.add("cell");
+        headerCellElem.textContent = i;
+        headerRowElem.appendChild(headerCellElem);
+    }
+}
+
+function showRowHeader(parentRowElem, lineNum){
+    let cell = document.createElement("td");
+    cell.classList.add("cell");
+    cell.classList.add("rowheader");
+    cell.textContent = String(lineNum);
+    parentRowElem.appendChild(cell);
+}
+
 ////////////////////////////////////////////////////////////////////
+// task 2 and 3
+
+////////////////////////////////////////////////////////////////////
+// common classes for catalog and basket
 
 class Product {
     constructor(code, name, price) {
@@ -61,6 +85,9 @@ class Product {
         return (this.code === product.code);
     }
 }
+
+//////////////////////////////////////////
+// Catalog
 
 class Catalog {
     constructor(){
@@ -76,6 +103,7 @@ class Catalog {
         return null;
     }
 }
+
 
 function fullCatalog(){
     catalog.addProduct(new Product("0001", "Smartphone", 21500));
@@ -122,6 +150,9 @@ function showCatalog(catalogPlaceHolder){
 
     catalogPlaceHolder.appendChild(catalogElem);
 }
+
+//////////////////////////////////////////
+// Basket
 
 class Basket {
     constructor() {
@@ -175,7 +206,7 @@ function showBasket(basketElem){
     basketElem.innerText = basketInfo;
 }
 
-
+//////////////////////////////////////////
 // initialize
 
 var catalog = new Catalog();
