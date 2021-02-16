@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title>Lesson </title>
+    <title>Lesson 5</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Lesson </h1>
-    <script defer src="main.js"></script>
+    <h1>Урок 5</h1>
+    
+    <h2>Шахматная доска</h2>
+    <div id="chessboard"></div>
+
+    <h2>Корзина</h2>
+    <p id="basket"></p>
+
+    <h2>Каталог</h2>
+    <div id="catalog"></div>
+
+    <script src="main.js"></script>
+    <script>
+        window.onload = function(){
+            showChessBoard(document.querySelector("#chessboard"));
+            showBasket(document.querySelector("#basket"));
+            showCatalog(document.querySelector("#catalog"));
+        };       
+    </script>
 </body>
 
 </html>
