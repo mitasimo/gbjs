@@ -88,18 +88,14 @@ function showCatalog(catalogPlaceHolder){
         buttonElem.value = item.code;
         buttonElem.addEventListener("click", addProductToBasket);
         prodButtonElem.appendChild(buttonElem);
-
     }
 
     catalogPlaceHolder.appendChild(catalogElem);
 }
 
 function addProductToBasket(event){
-    console.log(event.originalTarget.value);
-
     let prod = catalog.findProduct(event.originalTarget.value);
     basket.addItem(prod, 1);
-
     showBasket(document.querySelector("#basket"));
 }
 
@@ -142,11 +138,7 @@ class BasketItem{
 }
 
 function showBasket(basketElem){
-
-    console.log(basket);
     
-    basketElem.innerHTML = "";
-
     //
     let basketTableElem = document.createElement("table");
     
@@ -206,8 +198,13 @@ function showBasket(basketElem){
         totalElem.textContent = `В корзине ${totalQty} товаров на сумму ${totalPrice} рублей`;
     }
 
-    basketElem.appendChild(basketTableElem);
-    basketElem.appendChild(totalElem);
+    //basketElem.textContent = "";
+    //while (basketElem.lastElementChild) {
+    //    basketElem.removeChild(basketElem.lastElementChild);
+    //}
+    basketElem.replaceChildren(basketTableElem, totalElem);
+    //basketElem.appendChild(basketTableElem);
+    //basketElem.appendChild(totalElem);
 }
 
 //////////////////////////////////////////
