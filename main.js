@@ -1,79 +1,7 @@
 "use strict"
 
 ////////////////////////////////////////////////////////////////////
-// task 1
-
-function showChessBoard(placeHolder){
-
-    let chessBoard = document.createElement("table");
-    
-    // columns header
-   showColumnHeader(chessBoard);
-
-    // create board
-    for(let i = 8; i > 0; i--){
-        // add new row
-        let row = document.createElement("tr");
-        chessBoard.appendChild(row);
-        
-        // add row header at left side
-        showRowHeader(row, i);
-
-        let isOddRow = (i % 2) > 0;
-        
-        // add cells to row
-        for(let j = 1; j < 9; j++){
-            let isOddColumn = (j % 2) > 0;
-            let cell = document.createElement("td");
-            cell.classList.add("cell");
-            if(isOddRow == isOddColumn)
-                cell.style.backgroundColor = "#000";
-            row.appendChild(cell);
-        }
-
-        // add row header at right side
-        showRowHeader(row, i);
-   }
-
-    showColumnHeader(chessBoard);
-
-    // add chess board to DOM
-    placeHolder.appendChild(chessBoard);
-}
-
-function showColumnHeader(parentElem){
-    
-    // create row for header
-    let headerRowElem = document.createElement("tr");
-    parentElem.appendChild(headerRowElem);
-    
-    // first cell over row header
-    let emptyCellElem = document.createElement("th");
-    emptyCellElem.classList.add("cell");
-    headerRowElem.appendChild(emptyCellElem);
-    //
-    let columns = ['A','B','C','D','E','F','G','H']; 
-    for(let i of columns){
-        let headerCellElem = document.createElement("th");
-        headerCellElem.classList.add("cell");
-        headerCellElem.textContent = i;
-        headerRowElem.appendChild(headerCellElem);
-    }
-}
-
-function showRowHeader(parentRowElem, lineNum){
-    let cell = document.createElement("td");
-    cell.classList.add("cell");
-    cell.classList.add("rowheader");
-    cell.textContent = String(lineNum);
-    parentRowElem.appendChild(cell);
-}
-
-////////////////////////////////////////////////////////////////////
-// task 2 and 3
-
-////////////////////////////////////////////////////////////////////
-// common classes for catalog and basket
+// Product
 
 class Product {
     constructor(code, name, price) {
@@ -104,7 +32,6 @@ class Catalog {
     }
 }
 
-
 function fillCatalog(){
     catalog.addProduct(new Product("0001", "Smartphone", 21500));
     catalog.addProduct(new Product("0002", "Notebook", 82000));
@@ -130,6 +57,11 @@ function showCatalog(catalogPlaceHolder){
     priceColumnElem.textContent = "Цена";
     headerRowElem.appendChild(priceColumnElem);
     
+    // Empty header for button column
+    let buttonColumnElem = document.createElement("th");
+    //priceColumnElem.textContent = "Цена";
+    headerRowElem.appendChild(buttonColumnElem);
+    
     // add items to catalog
     for(let item of catalog.items){
         let prodRowElem = document.createElement("tr");
@@ -146,9 +78,29 @@ function showCatalog(catalogPlaceHolder){
         let prodPriceElem = document.createElement("td");
         prodPriceElem.textContent = item.price;
         prodRowElem.appendChild(prodPriceElem);
+
+        // cell for button
+        let prodButtonElem = document.createElement("td");
+        prodRowElem.appendChild(prodButtonElem);
+        // button
+        let buttonElem = document.createElement("button");
+        buttonElem.textContent = "В корзину";
+        buttonElem.value = item.code;
+        buttonElem.addEventListener("click", addProductToBasket);
+        prodButtonElem.appendChild(buttonElem);
+
     }
 
     catalogPlaceHolder.appendChild(catalogElem);
+}
+
+function addProductToBasket(event){
+    console.log(event.originalTarget.value);
+
+    let prod = catalog.findProduct(event.originalTarget.value);
+    basket.addItem(prod, 1);
+
+    showBasket(document.querySelector("#basket"));
 }
 
 //////////////////////////////////////////
@@ -162,7 +114,7 @@ class Basket {
         for (let item of this.items) {
             if (item.haveProduct(product)) {
                 item.addQty(qty);
-                break;
+                return;
             }
         };
         this.items.push(new BasketItem(product, qty));
@@ -189,21 +141,73 @@ class BasketItem{
     }
 }
 
-function fillBasket(){
-    basket.addItem(catalog.findProduct("0001"), 15);
-    basket.addItem(catalog.findProduct("0002"), 10);
-    basket.addItem(catalog.findProduct("0003"), 5);
-}
-
 function showBasket(basketElem){
 
-    let basketInfo = "Корзина пуста";
-    let basketTotal = basket.countPrice();
-    if(basketTotal.qty>0){
-        basketInfo = `В корзине ${basketTotal.qty} товаров на сумму ${basketTotal.price} рублей`;
+    console.log(basket);
+    
+    basketElem.innerHTML = "";
+
+    //
+    let basketTableElem = document.createElement("table");
+    
+    // table header
+    let headerElem = document.createElement("tr");
+    basketTableElem.appendChild(headerElem);
+
+    let colProdElem = document.createElement("th");
+    colProdElem.textContent = "Товар";
+    headerElem.appendChild(colProdElem);
+    
+    let colQtyElem = document.createElement("th");
+    colQtyElem.textContent = "Количество";
+    headerElem.appendChild(colQtyElem);
+    
+    let colPriceElem = document.createElement("th");
+    colPriceElem.textContent = "Цена";
+    headerElem.appendChild(colPriceElem);
+    
+    let colTotalElem = document.createElement("th");
+    colTotalElem.textContent = "Сумма";
+    headerElem.appendChild(colTotalElem);
+
+    let totalQty = 0;
+    let totalPrice = 0;
+
+    for(let curLine of basket.items){
+        let basketRowElem = document.createElement("tr");
+
+        let cellProdElem = document.createElement("td");
+        cellProdElem.textContent = curLine.product.name;
+        basketRowElem.appendChild(cellProdElem);
+
+        let cellQtyElem = document.createElement("td");
+        cellQtyElem.textContent = curLine.qty;
+        basketRowElem.appendChild(cellQtyElem);
+
+        let cellPriceElem = document.createElement("td");
+        cellPriceElem.textContent = curLine.product.price;
+        basketRowElem.appendChild(cellPriceElem);
+
+        let cellTotalElem = document.createElement("td");
+        cellTotalElem.textContent = curLine.product.price * curLine.qty;
+        basketRowElem.appendChild(cellTotalElem);
+
+        basketTableElem.appendChild(basketRowElem);
+
+        totalQty += curLine.qty;
+        totalPrice += curLine.product.price * curLine.qty;
+    }
+    
+    let totalElem = document.createElement("p");
+    
+    if(totalQty == 0){
+        totalElem.textContent = "Корзина пуста";
+    } else {
+        totalElem.textContent = `В корзине ${totalQty} товаров на сумму ${totalPrice} рублей`;
     }
 
-    basketElem.innerText = basketInfo;
+    basketElem.appendChild(basketTableElem);
+    basketElem.appendChild(totalElem);
 }
 
 //////////////////////////////////////////
@@ -213,4 +217,4 @@ var catalog = new Catalog();
 fillCatalog();
 
 var basket = new Basket();
-fillBasket();
+
