@@ -1,14 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title>Lesson </title>
+    <title>Lesson 6</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Lesson </h1>
-    <script defer src="main.js"></script>
+    <h1>Урок 6</h1>
+
+    <h2>Каталог</h2>
+    <div id="catalog"></div>
+
+    <h2>Корзина</h2>
+    <div id="basket"></div>
+
+    <script src="main.js"></script>
+    <script>
+        window.onload = function(){
+            showCatalog(document.querySelector("#catalog"));
+            showBasket(document.querySelector("#basket"));
+        };       
+    </script>
+
 </body>
 
 </html>
