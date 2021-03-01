@@ -38,7 +38,9 @@ function fillCatalog(){
     catalog.addProduct(new Product("0003", "Tablet", 35000));
 }
 
-function showCatalog(catalogPlaceHolder){
+function drawCatalog(){
+
+    let catalogPlaceHolder = document.querySelector("#catalog");
     
     let catalogElem = document.createElement("table");
 
@@ -96,7 +98,15 @@ function showCatalog(catalogPlaceHolder){
 function addProductToBasket(event){
     let prod = catalog.findProduct(event.originalTarget.value);
     basket.addItem(prod, 1);
-    showBasket(document.querySelector("#basket"));
+    drawBasket(document.querySelector("#basket"));
+    drawBasketInfo();
+}
+
+function switchToBasket(){
+    console.log("switchToBasket");
+    
+    document.querySelector("#main-tab").classList.add("hidden");
+    document.querySelector("#basket-tab").classList.remove("hidden");
 }
 
 //////////////////////////////////////////
@@ -115,6 +125,14 @@ class Basket {
         };
         this.items.push(new BasketItem(product, qty));
     }
+    removeItem(product, qty) {
+        for (let item of this.items) {
+            if (item.haveProduct(product)) {
+                item.removeQty(qty);
+                return;
+            }
+        };
+    }
     countPrice() {
         return this.items.reduce(function (total, item) {
             total.qty += item.qty;
@@ -132,12 +150,22 @@ class BasketItem{
     addQty(qty){
         this.qty += qty;
     }
+    removeQty(qty){
+        if(this.qty - qty >= 0){
+            this.qty -= qty;
+        }
+        else{
+            this.qty = 0;
+        }
+    }
     haveProduct(product){
         return this.product.isEqual(product);
     }
 }
 
-function showBasket(basketElem){
+function drawBasket(){
+
+    let basketPlaceHolderElem = document.querySelector("#basket");
     
     //
     let basketTableElem = document.createElement("table");
@@ -162,49 +190,111 @@ function showBasket(basketElem){
     colTotalElem.textContent = "Сумма";
     headerElem.appendChild(colTotalElem);
 
-    let totalQty = 0;
-    let totalPrice = 0;
+    let colBtnElem = document.createElement("th");
+    colBtnElem.setAttribute("colspan", "2")
+    headerElem.appendChild(colBtnElem);
 
-    for(let curLine of basket.items){
+    for(let item of basket.items){
         let basketRowElem = document.createElement("tr");
 
         let cellProdElem = document.createElement("td");
-        cellProdElem.textContent = curLine.product.name;
+        cellProdElem.textContent = item.product.name;
         basketRowElem.appendChild(cellProdElem);
 
         let cellQtyElem = document.createElement("td");
-        cellQtyElem.textContent = curLine.qty;
+        cellQtyElem.textContent = item.qty;
         basketRowElem.appendChild(cellQtyElem);
 
         let cellPriceElem = document.createElement("td");
-        cellPriceElem.textContent = curLine.product.price;
+        cellPriceElem.textContent = item.product.price;
         basketRowElem.appendChild(cellPriceElem);
 
         let cellTotalElem = document.createElement("td");
-        cellTotalElem.textContent = curLine.product.price * curLine.qty;
+        cellTotalElem.textContent = item.product.price * item.qty;
         basketRowElem.appendChild(cellTotalElem);
 
+        let buttonIncQtyElem = document.createElement("button");
+        buttonIncQtyElem.value = item.product.code;
+        buttonIncQtyElem.textContent = "Доб.";
+        buttonIncQtyElem.addEventListener("click", incQty);
+        let cellIncQtyElem = document.createElement("td");
+        cellIncQtyElem.appendChild(buttonIncQtyElem);
+        basketRowElem.appendChild(cellIncQtyElem);
+       
+        let buttonDecQtyElem = document.createElement("button");
+        buttonDecQtyElem.value = item.product.code;
+        buttonDecQtyElem.textContent = "Уб.";
+        buttonDecQtyElem.addEventListener("click", decQty);
+        let cellDecQtyElem = document.createElement("td");
+        cellDecQtyElem.appendChild(buttonDecQtyElem);
+        basketRowElem.appendChild(cellDecQtyElem);
+
+        // add row to table
         basketTableElem.appendChild(basketRowElem);
-
-        totalQty += curLine.qty;
-        totalPrice += curLine.product.price * curLine.qty;
     }
     
-    let totalElem = document.createElement("p");
+    basketPlaceHolderElem.replaceChildren(basketTableElem);
+}
+
+function incQty(event){
+    let prod = catalog.findProduct(event.originalTarget.value);
+    basket.addItem(prod, 1);
+    drawBasket(document.querySelector("#basket"));
+}
+function decQty(event){
+    let prod = catalog.findProduct(event.originalTarget.value);
+    basket.removeItem(prod, 1);
+    drawBasket(document.querySelector("#basket"));
+}
+
+function drawBasketInfo(){
     
-    if(totalQty == 0){
-        totalElem.textContent = "Корзина пуста";
+    let basketInfoElem = document.querySelector("#basket_info");
+
+    let headerElem = document.createElement("h2");
+    headerElem.textContent = "Корзина";
+
+    let contentElem = document.createElement("p");
+    let total = basket.countPrice();
+    if(total.qty == 0){
+        contentElem.textContent = "Корзина пуста";
     } else {
-        totalElem.textContent = `В корзине ${totalQty} товаров на сумму ${totalPrice} рублей`;
+        contentElem.textContent = `В корзине ${total.qty} товаров на сумму ${total.price} рублей`;
     }
 
-    //basketElem.textContent = "";
-    //while (basketElem.lastElementChild) {
-    //    basketElem.removeChild(basketElem.lastElementChild);
-    //}
-    basketElem.replaceChildren(basketTableElem, totalElem);
-    //basketElem.appendChild(basketTableElem);
-    //basketElem.appendChild(totalElem);
+    basketInfoElem.replaceChildren(headerElem, contentElem);
+}
+
+var curBasketTab = 0;
+function basketTabNext(){
+    if(curBasketTab < 2) {
+        curBasketTab++;
+    }
+    else{
+        curBasketTab = 0;
+    }
+
+    let basketElem = document.querySelector("#basket-out");
+    let addressElem = document.querySelector("#address");
+    let commentElem = document.querySelector("#comment");
+    
+    switch(curBasketTab){
+        case 0:
+            basketElem.classList.remove("hidden");
+            addressElem.classList.add("hidden");
+            commentElem.classList.add("hidden");
+            break;
+        case 1:
+            basketElem.classList.add("hidden");
+            addressElem.classList.remove("hidden");
+            commentElem.classList.add("hidden");
+            break;
+        case 2:
+            basketElem.classList.add("hidden");
+            addressElem.classList.add("hidden");
+            commentElem.classList.remove("hidden");
+            break;
+    }
 }
 
 //////////////////////////////////////////

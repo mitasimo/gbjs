@@ -1,14 +1,13 @@
-td {
+td, th {
     border: 1px solid;
 }
 
-.rowheader{
-    border: none;
-    text-align: center;
-    font-weight: bold;
+
+#basket {
+    margin-top: 50px;
 }
 
-.cell {
-    width: 50px;
-    height: 50px;
+.hidden {
+    display: none;
 }
+

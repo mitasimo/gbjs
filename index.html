@@ -3,24 +3,42 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lesson 6</title>
+    <title>Lesson 7</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Урок 6</h1>
+    <h1>Урок 7</h1>
+    
+    <div id="main-tab">
+        <div id="basket_info"></div>
+        <h2>Каталог</h2>
+        <div id="catalog"></div>
+        <button style="margin-top: 15px;" onclick="switchToBasket()">Перейти в корзину</button>
+    </div>
 
-    <h2>Каталог</h2>
-    <div id="catalog"></div>
-
-    <h2>Корзина</h2>
-    <div id="basket"></div>
+    <div id="basket-tab" class="hidden">
+        <div id="basket-out">
+            <h2>Товары в корзине</h2>
+            <div id="basket"style="margin-top: 10px;"></div>
+        </div>
+        <div id="address" class="hidden">
+            <h2>Адрес доставки</h2>
+            <textarea rows="10" cols="45" placeholder="укажите адрес доставки товаров"></textarea>
+        </div>
+        <div id="comment" class="hidden">
+            <h2>Комментарий</h2>
+            <textarea rows="10" cols="45" placeholder="укажите дополнительную информацию для курьера"></textarea>
+        </div>
+        <button style="margin-top: 15px;" onclick="basketTabNext()">Далее</button>
+    </div>
 
     <script src="main.js"></script>
     <script>
         window.onload = function(){
-            showCatalog(document.querySelector("#catalog"));
-            showBasket(document.querySelector("#basket"));
+            drawCatalog();
+            drawBasket();
+            drawBasketInfo();
         };       
     </script>
 
