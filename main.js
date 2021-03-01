@@ -87,19 +87,20 @@ function drawCatalog(){
         // button
         let buttonElem = document.createElement("button");
         buttonElem.textContent = "В корзину";
-        buttonElem.value = item.code;
-        buttonElem.addEventListener("click", addProductToBasket);
+        buttonElem.addEventListener("click", makeProductAdder(item.code));
         prodButtonElem.appendChild(buttonElem);
     }
 
     catalogPlaceHolder.appendChild(catalogElem);
 }
 
-function addProductToBasket(event){
-    let prod = catalog.findProduct(event.originalTarget.value);
-    basket.addItem(prod, 1);
-    drawBasket(document.querySelector("#basket"));
-    drawBasketInfo();
+function makeProductAdder(code){
+    return function(){
+        let prod = catalog.findProduct(code);
+        basket.addItem(prod, 1);
+        drawBasket(document.querySelector("#basket"));
+        drawBasketInfo();
+    }
 }
 
 function switchToBasket(){
@@ -214,17 +215,15 @@ function drawBasket(){
         basketRowElem.appendChild(cellTotalElem);
 
         let buttonIncQtyElem = document.createElement("button");
-        buttonIncQtyElem.value = item.product.code;
         buttonIncQtyElem.textContent = "Доб.";
-        buttonIncQtyElem.addEventListener("click", incQty);
+        buttonIncQtyElem.addEventListener("click", makeIncQty(item.product.code));
         let cellIncQtyElem = document.createElement("td");
         cellIncQtyElem.appendChild(buttonIncQtyElem);
         basketRowElem.appendChild(cellIncQtyElem);
        
         let buttonDecQtyElem = document.createElement("button");
-        buttonDecQtyElem.value = item.product.code;
         buttonDecQtyElem.textContent = "Уб.";
-        buttonDecQtyElem.addEventListener("click", decQty);
+        buttonDecQtyElem.addEventListener("click", makeDecQty(item.product.code));
         let cellDecQtyElem = document.createElement("td");
         cellDecQtyElem.appendChild(buttonDecQtyElem);
         basketRowElem.appendChild(cellDecQtyElem);
@@ -236,15 +235,19 @@ function drawBasket(){
     basketPlaceHolderElem.replaceChildren(basketTableElem);
 }
 
-function incQty(event){
-    let prod = catalog.findProduct(event.originalTarget.value);
-    basket.addItem(prod, 1);
-    drawBasket(document.querySelector("#basket"));
+function makeIncQty(code){
+    return function(){
+        let prod = catalog.findProduct(code);
+        basket.addItem(prod, 1);
+        drawBasket(document.querySelector("#basket"));
+    }
 }
-function decQty(event){
-    let prod = catalog.findProduct(event.originalTarget.value);
-    basket.removeItem(prod, 1);
-    drawBasket(document.querySelector("#basket"));
+function makeDecQty(code){
+    return function(){
+        let prod = catalog.findProduct(code);
+        basket.removeItem(prod, 1);
+        drawBasket(document.querySelector("#basket"));
+    }
 }
 
 function drawBasketInfo(){
