@@ -1,0 +1,13 @@
+td, th {
+    border: 1px solid;
+}
+
+
+#basket {
+    margin-top: 50px;
+}
+
+.hidden {
+    display: none;
+}
+

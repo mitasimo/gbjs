@@ -1,14 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
-    <title>Lesson </title>
+    <title>Lesson 7</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Lesson </h1>
-    <script defer src="main.js"></script>
+    <h1>Урок 7</h1>
+    
+    <div id="main-tab">
+        <div id="basket_info"></div>
+        <h2>Каталог</h2>
+        <div id="catalog"></div>
+        <button style="margin-top: 15px;" onclick="switchToBasket()">Перейти в корзину</button>
+    </div>
+
+    <div id="basket-tab" class="hidden">
+        <div id="basket-out">
+            <h2>Товары в корзине</h2>
+            <div id="basket"style="margin-top: 10px;"></div>
+        </div>
+        <div id="address" class="hidden">
+            <h2>Адрес доставки</h2>
+            <textarea rows="10" cols="45" placeholder="укажите адрес доставки товаров"></textarea>
+        </div>
+        <div id="comment" class="hidden">
+            <h2>Комментарий</h2>
+            <textarea rows="10" cols="45" placeholder="укажите дополнительную информацию для курьера"></textarea>
+        </div>
+        <button style="margin-top: 15px;" onclick="basketTabNext()">Далее</button>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        window.onload = function(){
+            drawCatalog();
+            drawBasket();
+            drawBasketInfo();
+        };       
+    </script>
+
 </body>
 
 </html>
