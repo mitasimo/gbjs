@@ -96,11 +96,15 @@ function drawCatalog(){
 
 function makeProductAdder(code){
     return function(){
-        let prod = catalog.findProduct(code);
-        basket.addItem(prod, 1);
-        drawBasket(document.querySelector("#basket"));
-        drawBasketInfo();
+        addProductToBasket(code);
     }
+}
+
+function addProductToBasket(code){
+    let prod = catalog.findProduct(code);
+    basket.addItem(prod, 1);
+    drawBasket(document.querySelector("#basket"));
+    drawBasketInfo();
 }
 
 function switchToBasket(){
@@ -237,18 +241,28 @@ function drawBasket(){
 
 function makeIncQty(code){
     return function(){
-        let prod = catalog.findProduct(code);
-        basket.addItem(prod, 1);
-        drawBasket(document.querySelector("#basket"));
+        incQty(code);
     }
 }
+
+function incQty(code){
+    let prod = catalog.findProduct(code);
+    basket.addItem(prod, 1);
+    drawBasket(document.querySelector("#basket"));
+}
+
 function makeDecQty(code){
     return function(){
-        let prod = catalog.findProduct(code);
-        basket.removeItem(prod, 1);
-        drawBasket(document.querySelector("#basket"));
+        decQty(code);
     }
 }
+
+function decQty(code){
+    let prod = catalog.findProduct(code);
+    basket.removeItem(prod, 1);
+    drawBasket(document.querySelector("#basket"));
+}
+
 
 function drawBasketInfo(){
     
